@@ -4,9 +4,11 @@ const path = require('path');
 
 const app = express();
 
-// Setup Google Drive API
+// قراءة credentials من environment variable
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS || '{}');
+
 const auth = new google.auth.GoogleAuth({
-  keyFile: path.join(__dirname, 'credentials.json'),
+  credentials: credentials,
   scopes: ['https://www.googleapis.com/auth/drive.readonly']
 });
 
@@ -30,6 +32,7 @@ app.get('/api/documents', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('API running on http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`API running on port ${PORT}`);
 });
