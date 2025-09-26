@@ -1,11 +1,12 @@
 const express = require('express');
 const { google } = require('googleapis');
-const path = require('path');
 
 const app = express();
 
-// قراءة credentials من environment variable
-const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS || '{}');
+// قراءة credentials من environment variable (Base64)
+const credentialsBase64 = process.env.GOOGLE_CREDENTIALS || '';
+const credentialsJson = Buffer.from(credentialsBase64, 'base64').toString('utf-8');
+const credentials = JSON.parse(credentialsJson);
 
 const auth = new google.auth.GoogleAuth({
   credentials: credentials,
